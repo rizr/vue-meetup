@@ -1,27 +1,43 @@
 <template>
   <v-app light>
-    <v-navigation-drawer v-model="sideNav">
+    <v-navigation-drawer disable-route-watcher v-model="sideNav">
       <v-list>
-        <v-list-tile>
+        <v-list-tile
+          v-for="item in menuItems"
+          :key="item.title"
+          router
+          :to="item.link">
           <v-list-tile-action>
-            <v-icon>supervisor_account</v-icon>
+            <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-action>
-            View Meetups
+            {{ item.title }}
           </v-list-tile-action>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar dark class="primary">
-      <v-toolbar-side-icon class="hidden-sm-and-up" @click.native.stop="sideNav = !sideNav"></v-toolbar-side-icon>
-      <v-toolbar-title>DevMeetup</v-toolbar-title>
+      <v-toolbar-side-icon
+        class="hidden-sm-and-up"
+        @click.native.stop="sideNav = !sideNav"></v-toolbar-side-icon>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" style="cursor: pointer">DevMeetup</router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn flat><v-icon dark left>supervisor_account</v-icon>View Meetups</v-btn>
+        <v-btn
+          flat
+          v-for="item in menuItems"
+          :key="item.title"
+          router
+          :to="item.link">
+          <v-icon dark left>{{ item.icon }}</v-icon>
+          {{ item.title }}
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <main>
-
+    <router-view></router-view>
     </main>
   </v-app>
 </template>
@@ -31,6 +47,33 @@
     data() {
       return {
         sideNav: false,
+        menuItems: [
+          {
+            icon: 'supervisor_account',
+            title: 'View Meetups',
+            link: '/meetups',
+          },
+          {
+            icon: 'room',
+            title: 'Organize Meetups',
+            link: '/meetup/new',
+          },
+          {
+            icon: 'person',
+            title: 'Profile',
+            link: '/profile',
+          },
+          {
+            icon: 'face',
+            title: 'Signup',
+            link: '/signup',
+          },
+          {
+            icon: 'lock_open',
+            title: 'Sign in',
+            link: '/signin',
+          },
+        ],
       };
     },
   };
