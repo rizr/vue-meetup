@@ -11,9 +11,12 @@
     <v-layout row wrap class="mt-2">
       <v-carousel>
         <v-carousel-item
-          v-for="(meetup,i) in meetups"
+          style="cursor: pointer"
+          v-for="(meetup, i) in meetups"
           :src="meetup.imageUrl"
-          :key="meetup.id">
+          :key="meetup.id"
+          @click="onLoadMeetup(meetup.id)">
+          <div class="title">{{ meetup.title }}</div>
         </v-carousel-item>
       </v-carousel>
     </v-layout>
@@ -27,21 +30,27 @@
 
 <script>
   export default {
-    data() {
-      return {
-        meetups: [
-          {
-            imageUrl: 'https://i.ytimg.com/vi/Z3HvId-Ojp4/maxresdefault.jpg',
-            title: 'Ponny',
-            id: 'maxresdefault',
-          },
-          {
-            imageUrl: 'http://img09.deviantart.net/985f/i/2012/344/e/e/look_at_da_pwetty_blue_ponny__by_beavernator-d5nla0j.png',
-            title: 'Ponny',
-            id: 'd5nla0j',
-          },
-        ],
-      };
+    computed: {
+      meetups() {
+        return this.$store.getters.featuredMeetups;
+      },
+    },
+    methods: {
+      onLoadMeetup(id) {
+        this.$router.push(`/meetup/${id}`);
+      },
     },
   };
 </script>
+
+<style scoped>
+.title {
+  position: absolute;
+  bottom: 50px;
+  color: white;
+  background-color: rgba(0,0,0,0.5);
+  font-size: 2em;
+  padding: 10px;
+  border-radius: 10px 10px 0px 0px;
+}
+</style>
