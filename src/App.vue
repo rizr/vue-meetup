@@ -45,22 +45,11 @@
     data() {
       return {
         sideNav: false,
-        menuItems: [
-          {
-            icon: 'supervisor_account',
-            title: 'View Meetups',
-            link: '/meetups',
-          },
-          {
-            icon: 'room',
-            title: 'Organize Meetups',
-            link: '/meetup/new',
-          },
-          {
-            icon: 'person',
-            title: 'Profile',
-            link: '/profile',
-          },
+      };
+    },
+    computed: {
+      menuItems() {
+        let menuItems = [
           {
             icon: 'face',
             title: 'Signup',
@@ -71,12 +60,37 @@
             title: 'Sign in',
             link: '/signin',
           },
-        ],
-      };
+        ];
+
+        if (this.userIsAuthenticated) {
+          menuItems = [
+            {
+              icon: 'supervisor_account',
+              title: 'View Meetups',
+              link: '/meetups',
+            },
+            {
+              icon: 'room',
+              title: 'Organize Meetups',
+              link: '/meetup/new',
+            },
+            {
+              icon: 'person',
+              title: 'Profile',
+              link: '/profile',
+            },
+          ];
+        }
+        return menuItems;
+      },
+      userIsAuthenticated() {
+        const user = this.$store.getters.user;
+        return user && user !== null && user !== undefined;
+      },
     },
   };
 </script>
 
 <style lang="stylus">
-  @import './stylus/main'
+  @import './stylus/main';
 </style>
