@@ -5,8 +5,10 @@ import App from './App';
 import router from './router';
 import store from './store/';
 import dateFilter from './filter/date';
+import Alert from './components/Shared/Alert';
 
 Vue.filter('date', dateFilter);
+Vue.component('app-alert', Alert);
 
 Vue.use(Vuetify);
 Vue.config.productionTip = false;
