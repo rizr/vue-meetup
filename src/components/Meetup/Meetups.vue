@@ -37,6 +37,7 @@
   export default {
     computed: {
       meetups() {
+        console.log(this.$store.getters.loadedMeetups);
         return this.$store.getters.loadedMeetups;
       },
     },

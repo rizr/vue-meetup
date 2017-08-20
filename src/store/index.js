@@ -42,7 +42,8 @@ export default new Vuex.Store({
           commit('setLoading', false);
           const data = response.val();
           if (data) {
-            const meetups = Object.keys(data).map(elem => data[elem]);
+            const meetups = Object.keys(data).map(objectId =>
+              ({ ...data[objectId], id: objectId }));
             commit('setLoadedMeetups', meetups);
           }
         });
