@@ -6,24 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    loadedMeetups: [
-      {
-        date: new Date(),
-        imageUrl: 'https://i.ytimg.com/vi/Z3HvId-Ojp4/maxresdefault.jpg',
-        title: 'Ponny',
-        id: '1',
-        location: 'new york',
-        description: '12313',
-      },
-      {
-        date: new Date(),
-        imageUrl: 'http://img09.deviantart.net/985f/i/2012/344/e/e/look_at_da_pwetty_blue_ponny__by_beavernator-d5nla0j.png',
-        title: 'Ponny2',
-        id: '2',
-        location: 'new york',
-        description: '12313',
-      },
-    ],
+    loadedMeetups: [],
     user: null,
     loading: null,
     error: null,
@@ -32,7 +15,9 @@ export default new Vuex.Store({
     createMeetup(state, payload) {
       state.loadedMeetups.push(payload);
     },
-
+    setLoadedMeetups(state, payload) {
+      state.loadedMeetups = payload;
+    },
     setUser(state, payload) {
       state.user = payload;
     },
@@ -47,9 +32,33 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    loadMeetups({ commit }) {
+      commit('setLoading', true);
+      firebase
+        .database()
+        .ref('meetups')
+        .once('value')
+        .then((response) => {
+          commit('setLoading', false);
+          const data = response.val();
+          if (data) {
+            const meetups = Object.keys(data).map(elem => data[elem]);
+            commit('setLoadedMeetups', meetups);
+          }
+        });
+    },
     createMeetup({ commit }, payload) {
       const meetup = Object.assign({}, payload);
-      commit('createMeetup', meetup);
+      firebase
+        .database()
+        .ref('meetups')
+        .push(meetup)
+        .then((data) => {
+          commit('createMeetup', {
+            ...meetup,
+            id: data.key,
+          });
+        });
     },
     signup({ commit }, payload) {
       commit('setLoading', true);

@@ -1,5 +1,5 @@
 <template>
   <div>
-    <p>profile</p>
+    <h1>W I P</h1>
   </div>
 </template>

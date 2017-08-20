@@ -117,7 +117,7 @@
           date.setMinutes(this.time.getMinutes());
         }
 
-        return date;
+        return date.toISOString();
       },
     },
     methods: {

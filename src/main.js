@@ -27,5 +27,7 @@ new Vue({
       projectId: 'meetup-43e23',
       storageBucket: 'meetup-43e23.appspot.com',
     });
+
+    this.$store.dispatch('loadMeetups');
   },
 });
