@@ -48,7 +48,7 @@ export default new Vuex.Store({
           }
         });
     },
-    createMeetup({ commit }, payload) {
+    createMeetup({ commit, getters }, payload) {
       const meetup = Object.assign({}, payload);
       firebase
         .database()
@@ -58,6 +58,7 @@ export default new Vuex.Store({
           commit('createMeetup', {
             ...meetup,
             id: data.key,
+            creatorId: getters.user.id,
           });
         });
     },
@@ -99,6 +100,16 @@ export default new Vuex.Store({
           commit('setError', error);
           commit('setLoading', false);
         });
+    },
+    autoSignIn({ commit }, payload) {
+      commit('setUser', {
+        id: payload.uid,
+        registeredMeetups: [],
+      });
+    },
+    logout({ commit }) {
+      firebase.auth().signOut();
+      commit('setUser', null);
     },
     clearError({ commit }) {
       commit('clearError');

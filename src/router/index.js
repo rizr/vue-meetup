@@ -7,6 +7,7 @@ import Meetup from '@/components/Meetup/Meetup';
 import Profile from '@/components/User/Profile';
 import Signin from '@/components/User/Signin';
 import Signup from '@/components/User/Signup';
+import Middlewares from './middlewares';
 
 Vue.use(Router);
 
@@ -33,11 +34,13 @@ export default new Router({
       path: '/meetup/new',
       name: 'CreateMeetups',
       component: CreateMeetup,
+      beforeEnter: Middlewares.isAuth,
     },
     {
       path: '/profile',
       name: 'Profile',
       component: Profile,
+      beforeEnter: Middlewares.isAuth,
     },
     {
       path: '/signup',
