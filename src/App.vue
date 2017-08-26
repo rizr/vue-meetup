@@ -101,10 +101,10 @@
         const user = this.$store.getters.user;
         return user && user !== null && user !== undefined;
       },
-      methods: {
-        onLogout() {
-          this.$store.dispatch('logout');
-        },
+    },
+    methods: {
+      onLogout() {
+        this.$store.dispatch('logout');
       },
     },
   };

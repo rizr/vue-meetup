@@ -30,12 +30,14 @@
           </v-layout>
           <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
-              <v-text-field
-                name="imageUrl"
-                label="Image URL"
-                id="image-url"
-                v-model="imageUrl"
-                required></v-text-field>
+              <v-btn class="primary" @click="onPickFile">Upload Image</v-btn>
+              <input
+                type="file"
+                style="display: none"
+                @change="onFilePicked"
+                ref="fileInput"
+                accept="image/*"
+              >
             </v-flex>
           </v-layout>
           <v-layout row>
@@ -62,13 +64,11 @@
           <v-layout row class="mb-2">
             <v-flex xs12 sm6 offset-sm3>
               <v-date-picker v-model="date"></v-date-picker>
-              <p>{{ date }}</p>
             </v-flex>
           </v-layout>
           <v-layout row>
             <v-flex xs12 sm6 offset-sm3>
               <v-time-picker v-model="time" format="24hr"></v-time-picker>
-              <p>{{ time }}</p>
             </v-flex>
           </v-layout>
           <v-layout row>
@@ -94,6 +94,7 @@
         location: '',
         imageUrl: '',
         description: '',
+        image: null,
         date: new Date(),
         time: new Date(),
       };
@@ -121,15 +122,30 @@
       },
     },
     methods: {
+      onPickFile() {
+        this.$refs.fileInput.click();
+      },
+      onFilePicked(event) {
+        const files = event.target.files;
+        const fileReader = new FileReader();
+        fileReader.addEventListener('load', () => {
+          this.imageUrl = fileReader.result;
+        });
+        fileReader.readAsDataURL(files[0]);
+        this.image = files[0];
+      },
       onCreateMeetup() {
         if (!this.formIsValid) {
+          return;
+        }
+        if (!this.image) {
           return;
         }
 
         const meetup = {
           title: this.title,
           location: this.location,
-          imageUrl: this.imageUrl,
+          image: this.image,
           description: this.description,
           date: this.submitableDateTime,
         };
