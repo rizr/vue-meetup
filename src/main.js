@@ -6,8 +6,10 @@ import router from './router';
 import store from './store/';
 import dateFilter from './filter/date';
 import Alert from './components/Shared/Alert';
+import EditMeetupDialog from './components/Meetup/Edit/EditMeetup';
 
 Vue.filter('date', dateFilter);
+Vue.component('edit-meetup-dialog', EditMeetupDialog);
 Vue.component('app-alert', Alert);
 
 Vue.use(Vuetify);

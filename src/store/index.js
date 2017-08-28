@@ -15,6 +15,11 @@ export default new Vuex.Store({
     createMeetup(state, payload) {
       state.loadedMeetups.push(payload);
     },
+    updateMeetup(state, payload) {
+      // eslint-disable-next-line
+      let meetup = state.loadedMeetups.find(elem => elem.id === payload.id);
+      meetup = Object.assign(meetup, payload);
+    },
     setLoadedMeetups(state, payload) {
       state.loadedMeetups = payload;
     },
@@ -48,7 +53,7 @@ export default new Vuex.Store({
           }
         });
     },
-    createMeetup({ commit }, payload) {
+    createMeetup({ commit, getters }, payload) {
       const meetup = Object.assign({}, payload);
       let id;
       let imageUrl;
@@ -69,7 +74,7 @@ export default new Vuex.Store({
         .then((fileData) => {
           imageUrl = fileData.metadata.downloadURLs[0];
           return firebase.database()
-            .ref('metups')
+            .ref('meetups')
             .child(id)
             .update({ imageUrl });
         })
@@ -78,7 +83,20 @@ export default new Vuex.Store({
             ...meetup,
             imageUrl,
             id,
+            creatorId: getters.user.id,
           });
+        });
+    },
+    updateMeetup({ commit }, payload) {
+      commit('setLoading', true);
+      firebase
+        .database()
+        .ref('/meetups')
+        .child(payload.id)
+        .update(payload)
+        .then(() => {
+          commit('setLoading', false);
+          commit('updateMeetup', payload);
         });
     },
     signup({ commit }, payload) {
