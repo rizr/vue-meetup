@@ -7,9 +7,13 @@ import store from './store/';
 import dateFilter from './filter/date';
 import Alert from './components/Shared/Alert';
 import EditMeetupDialog from './components/Meetup/Edit/EditMeetup';
+import EditMeetupDate from './components/Meetup/Edit/EditMeetupDate';
+import RegisterDialog from './components/Meetup/Register/Register';
 
 Vue.filter('date', dateFilter);
 Vue.component('edit-meetup-dialog', EditMeetupDialog);
+Vue.component('edit-meetup-date', EditMeetupDate);
+Vue.component('register-dialog', RegisterDialog);
 Vue.component('app-alert', Alert);
 
 Vue.use(Vuetify);
@@ -32,6 +36,7 @@ new Vue({
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.$store.dispatch('autoSignIn', user);
+        this.$store.dispatch('fetchUserData');
       }
     });
     this.$store.dispatch('loadMeetups');

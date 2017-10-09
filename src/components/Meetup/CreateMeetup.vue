@@ -141,7 +141,6 @@
         if (!this.image) {
           return;
         }
-
         const meetup = {
           title: this.title,
           location: this.location,

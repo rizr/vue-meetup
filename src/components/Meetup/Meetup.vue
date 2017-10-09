@@ -15,7 +15,7 @@
         <v-card>
           <v-card-title>
             <h6 class="primary--text">{{ meetup.title }}</h6>
-            <template v-if="true">
+            <template v-if="isCreator">
               <v-spacer></v-spacer>
               <edit-meetup-dialog :meetup="meetup"></edit-meetup-dialog>
             </template>
@@ -27,6 +27,9 @@
           <v-card-text>
             <div class="info--text">
               {{ meetup.date | date }} - {{ meetup.location }}
+              <div>
+                <edit-meetup-date :meetup="meetup" v-if="true"></edit-meetup-date>
+              </div>
             </div>
             <div>
               {{ meetup.description }}
@@ -34,9 +37,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="primary">
-              Register
-            </v-btn>
+            <register-dialog :meetupId="id" v-if="userIsAuth"></register-dialog>
           </v-card-actions>
         </v-card>
       </v-flex>
